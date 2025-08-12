@@ -5,7 +5,7 @@ metadata:
   title: Greeting Test
   description: Greeting workflow
   annotations:
-    orchestrator.io/workflows: '[]'
+    orchestrator.io/workflows: '["greeting"]'
     sonataflow.org/description: YAML based greeting workflow
     sonataflow.org/expressionLang: jq
     sonataflow.org/version: "1.0"
