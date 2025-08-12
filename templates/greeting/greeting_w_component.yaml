@@ -8,7 +8,6 @@ metadata:
     orchestrator.io/workflows: '[]'
     sonataflow.org/description: YAML based greeting workflow
     sonataflow.org/expressionLang: jq
-    sonataflow.org/profile: gitops
     sonataflow.org/version: "1.0"
   tags:
     - orchestrator
