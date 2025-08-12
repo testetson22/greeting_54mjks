@@ -18,15 +18,6 @@ spec:
     - component: default/red-hat-developer-hub
 
   parameters:
-    - title: Choose GitHub Location
-      required: [repoUrl]
-      properties:
-        repoUrl:
-          title: Repository Location
-          type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts: [github.com]
     - title: Provide workflow inputs
       required:
         - language
@@ -45,23 +36,6 @@ spec:
           pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
 
   steps:
-    - id: fetch
-      name: Fetch skeleton
-      action: fetch:template
-      input:
-        url: ./skeleton
-        copyWithoutRender:
-          - .github/workflows/*
-        values: {}
-
-    - id: publish
-      name: Publish to GitHub
-      action: publish:github
-      input:
-        allowedHosts: [github.com]
-        description: Static Backstage Component
-        repoUrl: ${{ parameters.repoUrl }}
-
     - id: register
       name: Register in Catalog
       action: catalog:register
@@ -81,8 +55,6 @@ spec:
 
   output:
     links:
-      - title: View repository
-        url: ${{ steps.publish.output.remoteUrl }}
       - title: View in catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
