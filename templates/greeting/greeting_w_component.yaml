@@ -5,15 +5,17 @@ metadata:
   title: Greeting with new component
   description: Greeting workflow
   annotations:
-    orchestrator.io/workflows: '["yamlgreet"]'
+    orchestrator.io/workflows: '[]'
+    sonataflow.org/description: YAML based greeting workflow
+    sonataflow.org/expressionLang: jq
+    sonataflow.org/profile: gitops
+    sonataflow.org/version: "1.0"
   tags:
     - orchestrator
 spec:
-  owner: red-hat-developer-hub-authors
-  system: red-hat-developer-hub
   type: service
   dependsOn:
-    - component: serverless-workflow
+    - component: default/red-hat-developer-hub
 
   parameters:
     - title: Choose GitHub Location
