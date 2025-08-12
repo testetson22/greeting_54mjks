@@ -16,46 +16,28 @@ spec:
   dependsOn:
     - component: default/red-hat-developer-hub
 
-  parameters:
-    - title: Provide workflow inputs
-      required:
-        - language
+  parameters: 
+    - $schema: http://json-schema.org/draft-07/schema#
+      type: object
       properties:
         language:
           title: Language
+          description: Language to greet
           type: string
-          ui:autofocus: true
           enum:
-            - 'English'
-            - 'Spanish'
-          default: 'English'
-        name:
-          title: Name
-          type: string
-          pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+            - English
+            - Spanish
+          default: English    
 
   steps:
-    - id: register
-      name: Register in Catalog
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: /catalog-info.yaml
-
     - id: runWorkflow
       name: Run workflow
       action: orchestrator:workflow:run
       input:
-        workflow_id: yamlgreet
-        targetEntity: component:default/example-component
-        parameters: # matches workflow's dataInputSchema
-          language: ${{ parameters.language }}
-          name: ${{ parameters.name }}
+        workflow_id: greeting
+        parameters: ${{ parameters }}
 
   output:
     links:
-      - title: View in catalog
-        icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}
       - title: Open workflow run
-        url: ${{ steps.runWorkflow.output.instanceUrl }}
+        url: "${{ steps.runWorkflow.output.instanceUrl }}"
