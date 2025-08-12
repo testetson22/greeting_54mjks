@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: greeting
-  title: Greeting with new component
+  title: Greeting Test
   description: Greeting workflow
   annotations:
     orchestrator.io/workflows: '[]'
