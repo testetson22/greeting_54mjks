@@ -12,7 +12,17 @@ spec:
   type: service
 
   # matches workflow's dataInputSchema
-  parameters: 
+  parameters:
+    - title: Choose Target Entity
+      properties:
+        target_entity:
+          title: Target Entity for the workflow run
+          description: Select an entity from the catalog
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              kind: Component
+              
     - $schema: http://json-schema.org/draft-07/schema#
       type: object
       properties:
