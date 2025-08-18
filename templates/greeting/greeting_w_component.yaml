@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: greetingComponent
-  title: Greeting Test
-  description: Greeting workflow
+  title: Greeting Test Picker
+  description: Greeting Picker workflow
   annotations:
     orchestrator.io/workflows: '["greeting"]'
     sonataflow.org/description: YAML based greeting workflow
