@@ -16,38 +16,64 @@ spec:
   dependsOn:
     - component: default/red-hat-developer-hub
 
-  parameters: 
-    - title: Choose Target Entity
+  parameters:
+    - title: Choose component name
+      required:
+        - entityName
       properties:
-        target_entity:
-          title: Target Entity for the workflow run
-          description: Select an entity from the catalog
-          ui:field: EntityPicker
-          ui:options:
-            catalogFilter:
-              kind: Component
-              
-    - $schema: http://json-schema.org/draft-07/schema#
-      type: object
+        entityName:
+          title: Entity Name
+          type: string
+          description: Name for the new component (will be used in catalog-info.yaml)
+          pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          ui:autofocus: true
+    - title: Provide workflow inputs
+      required:
+        - language
+        - name
       properties:
         language:
           title: Language
-          description: Language to greet
           type: string
           enum:
-            - English
-            - Spanish
-          default: English    
+            - 'English'
+            - 'Spanish'
+          default: 'English'
+        name:
+          title: Name
+          type: string
+          pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
 
   steps:
+    - id: fetch
+      name: Fetch catalog info
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: ./
+        values:
+          entityName: ${{ parameters.entityName }}
+    - id: register
+      name: Register in Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
     - id: runWorkflow
       name: Run workflow
       action: orchestrator:workflow:run
       input:
-        workflow_id: greeting
-        parameters: ${{ parameters }}
+        workflow_id: yamlgreet
+        target_entity: component:default/${{ parameters.entityName }}
+        parameters: # matches workflow's dataInputSchema
+          language: ${{ parameters.language }}
+          name: ${{ parameters.name }}
 
   output:
     links:
+      - title: View in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
       - title: Open workflow run
-        url: "${{ steps.runWorkflow.output.instanceUrl }}"
+        url: ${{ steps.runWorkflow.output.instanceUrl }}
