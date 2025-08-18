@@ -1,0 +1,50 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: greeting_redux
+  title: Greeting workflow Redux
+  description: YAML based greeting workflow redux
+  tags:
+    - orchestrator
+spec:
+  owner: group:default/red-hat
+  system: red-hat-developer-hub
+  type: service
+
+  # matches workflow's dataInputSchema
+  parameters:
+    - title: Choose Target Entity
+      properties:
+        target_entity:
+          title: Target Entity for the workflow run
+          description: Select an entity from the catalog
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              kind: Component
+              
+    - $schema: http://json-schema.org/draft-07/schema#
+      type: object
+      properties:
+        language:
+          title: Language
+          description: Language to greet
+          type: string
+          enum:
+            - English
+            - Spanish
+          default: English
+    
+
+  steps:
+    - id: runWorkflow
+      name: Run workflow
+      action: orchestrator:workflow:run
+      input:
+        workflow_id: greeting
+        parameters: ${{ parameters }}
+
+  output:
+    links:
+      - title: Open workflow run
+        url: "${{ steps.runWorkflow.output.instanceUrl }}"
