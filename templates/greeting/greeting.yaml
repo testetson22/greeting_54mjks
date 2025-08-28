@@ -23,18 +23,22 @@ spec:
             catalogFilter:
               kind: Component
               
-    - $schema: http://json-schema.org/draft-07/schema#
-      type: object
+    - title: Provide workflow inputs
+      required:
+        - language
       properties:
         language:
           title: Language
-          description: Language to greet
           type: string
+          ui:autofocus: true
           enum:
-            - English
-            - Spanish
-          default: English
-    
+            - 'English'
+            - 'Spanish'
+          default: 'English'
+        name:
+          title: Name
+          type: string
+          pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'    
 
   steps:
     - id: runWorkflow
@@ -42,7 +46,10 @@ spec:
       action: orchestrator:workflow:run
       input:
         workflow_id: greeting
-        parameters: ${{ parameters }}
+        target_entity: ${{ parameters.target_entity }}
+        parameters: # matches workflow's dataInputSchema
+          language: ${{ parameters.language }}
+          name: ${{ parameters.name }}
 
   output:
     links:
