@@ -5,7 +5,7 @@ metadata:
   title: Greeting Test Picker
   description: Greeting Picker workflow
   annotations:
-    orchestrator.io/workflows: '["greeting"]'
+    orchestrator.io/workflows: '["greeting", "user-onboarding"]'
     sonataflow.org/description: YAML based greeting workflow
     sonataflow.org/expressionLang: jq
     sonataflow.org/version: "1.0"
