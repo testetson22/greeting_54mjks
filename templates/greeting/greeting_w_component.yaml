@@ -5,7 +5,7 @@ metadata:
   title: Greeting Test Picker
   description: Greeting Picker workflow
   annotations:
-    orchestrator.io/workflows: '["greeting", "user-onboarding"]'
+    orchestrator.io/workflows: '["greeting"]'
     sonataflow.org/description: YAML based greeting workflow
     sonataflow.org/expressionLang: jq
     sonataflow.org/version: "1.0"
@@ -64,7 +64,7 @@ spec:
       name: Run workflow
       action: orchestrator:workflow:run
       input:
-        workflow_id: yamlgreet
+        workflow_id: greeting
         target_entity: component:default/${{ parameters.entityName }}
         parameters: # matches workflow's dataInputSchema
           language: ${{ parameters.language }}
