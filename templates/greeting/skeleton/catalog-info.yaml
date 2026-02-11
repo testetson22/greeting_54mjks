@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: greeting-test-component
+  description: Component created by Greeting Test Picker template
+  annotations:
+    orchestrator.io/workflows: '["greeting"]'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/red-hat-developer-hub-authors

@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: greetingComponent
   title: Greeting Test Picker
-  description: Greeting Picker workflow
+  description: Greeting Picker workflow — creates a Component entity and runs the greeting workflow against it
   annotations:
     orchestrator.io/workflows: '["greeting"]'
     sonataflow.org/description: YAML based greeting workflow
@@ -17,16 +17,6 @@ spec:
     - component: default/red-hat-developer-hub
 
   parameters:
-    - title: Choose component name
-      required:
-        - entityName
-      properties:
-        entityName:
-          title: Entity Name
-          type: string
-          description: Name for the new component (will be used in catalog-info.yaml)
-          pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
-          ui:autofocus: true
     - title: Provide workflow inputs
       required:
         - language
@@ -45,28 +35,19 @@ spec:
           pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
 
   steps:
-    - id: fetch
-      name: Fetch catalog info
-      action: fetch:template
-      input:
-        url: ./skeleton
-        targetPath: ./
-        values:
-          entityName: ${{ parameters.entityName }}
     - id: register
-      name: Register in Catalog
+      name: Register Component in Catalog
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: /catalog-info.yaml
+        catalogInfoUrl: https://github.com/testetson22/greeting_54mjks/blob/main/templates/greeting/skeleton/catalog-info.yaml
 
     - id: runWorkflow
-      name: Run workflow
+      name: Run greeting workflow
       action: orchestrator:workflow:run
       input:
         workflow_id: greeting
-        target_entity: component:default/${{ parameters.entityName }}
-        parameters: # matches workflow's dataInputSchema
+        target_entity: ${{ steps.register.output.entityRef }}
+        parameters:
           language: ${{ parameters.language }}
           name: ${{ parameters.name }}
 
